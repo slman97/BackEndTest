@@ -5,10 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register by email') }}</div>
+                <div class="card-header">{{ __('Register by Phone') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('RegisterPhone') }}">
                         @csrf
 
                         <div class="row mb-3">
@@ -51,6 +51,21 @@
                                 @enderror
                             </div>
                         </div>
+                        
+                        <div class="row mb-3">
+                            <label for="phone" class="col-md-4 col-form-label text-md-end">{{ __('phone') }}</label>
+                           
+
+                            <div class="col-md-6">
+                                <input id="phone" type="number" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}"  autocomplete="phone" autofocus>
+
+                                @error('phone')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="row mb-3">
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
 
@@ -81,13 +96,6 @@
                             </div>
                         </div>
                     </form>
-                    <div class="row mb-0">
-                        <div class="col-md-6 offset-md-4">
-                            <a class="btn btn-primary" href="/registerbyphone">
-                                {{ __('Register By Phone Namber') }}
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

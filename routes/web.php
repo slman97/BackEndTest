@@ -7,6 +7,7 @@ use App\Http\Controllers\TwoFactorcontroller;
 use App\Http\Controllers\Admin\Admincontroller;
 use App\Http\Controllers\Admin\UserAdminController;
 use App\Http\Controllers\Admin\ProductAdminController;
+use App\Http\Controllers\Auth\RigisterByPhoneController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\twoFactorMiddleware;
 
@@ -14,8 +15,12 @@ use App\Http\Middleware\twoFactorMiddleware;
 
 Auth::routes();
 
+// register by phone
+Route::get('/registerbyphone',[RigisterByPhoneController::class,'registerByPhone'])->name('registerbyphone');
+Route::post('/registerphone',[RigisterByPhoneController::class,'create'])->name('RegisterPhone');
 
 //password reset
+
 Route::post('/forgotpassword',[twoFactorcontroller::class,'forgotpassword'])->name('forgot/password');
 Route::post('/resetcodecheck/{user_id}',[twoFactorcontroller::class,'resetcodecheck'])->name('reset.code');
 Route::post('/resetpassword',[twoFactorcontroller::class,'resetpassword'])->name('reset.password');
