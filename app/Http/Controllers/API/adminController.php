@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\User;
-use App\Models\Post;
+use App\Models\Product;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\user\userStoreRequest;
-use App\Http\Requests\post\postStoreRequest;
-use App\Http\Requests\api\post\postUpdateRequest;
+use App\Http\Requests\product\productStoreRequest;
+use App\Http\Requests\api\product\ProductUpdateRequest;
 use App\Http\Requests\api\user\userUpdateRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -18,23 +18,23 @@ use Illuminate\Support\Facades\DB;
 
 class adminController extends Controller
 {
-    public function userspost(Request $request,$id)
+    public function usersProduct(Request $request,$id)
     {
-        $post = DB::table('posts')->where('user_id', $id)->get();
+        $product = Product::all()->where('user_id', $id);
 
         return response()->json([
             'status' => true,
-            'post' => $post
+            'produc' => $product
         ], 200);
     }
 
-    public function allUserPost(Request $request)
+    public function allUserProduct(Request $request)
     {
-        $post = DB::table('posts')->get();
+        $product = Product::all();
 
         return response()->json([
             'status' => true,
-            'post' => $post
+            'product' => $product
         ], 200);
         
     }
@@ -42,7 +42,7 @@ class adminController extends Controller
     public function addUser(userStoreRequest $request)
     {
         $data = $request->validated();
-        $user = User::create([
+        User::create([
             'user_type' =>$data['user_type'],
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
@@ -57,12 +57,12 @@ class adminController extends Controller
        
     }
 
-    public function addPost(postStoreRequest $request)
+    public function addProduct(ProductStoreRequest $request)
     {
        
         $data = $request->validated();
         $imagePath = $data['image']->store('uploads', 'public');
-        $post = Post::create([
+        Product::create([
             'user_id' =>$data['user_id'],
             'caption' => $data['caption'],
             'discription' => $data['discription'],
@@ -70,7 +70,7 @@ class adminController extends Controller
         ]);
         return response()->json([
             'status' => true,
-            'message' => 'Post Created Successfully',
+            'message' => 'product Created Successfully',
             ]);
     }
 
@@ -80,7 +80,7 @@ class adminController extends Controller
         $data = $request->validated();
         $id = $data['id'];
         $user = User::find($id);
-        $user->fill([
+        $user->update([
             'user_type' =>$data['user_type'],
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
@@ -88,34 +88,32 @@ class adminController extends Controller
             'email' => $data['email'],
         ]);
 
-        // Save user to database
-        $user->save();
         return response()->json([
             'status' => true,
             'message' => 'User edit Successfully',
             ]);
     }
 
-    public function editPost(postUpdateRequest $request)
+    public function editProduct(ProductUpdateRequest $request)
     {
        
         $data = $request->validated();
         $id = $data['id'];
-        $post = Post::findOrfail($id);
-        $imagePath = $data['image']->store('uploads', 'public');
-        $post->fill([
-            'user_id' =>$data['user_id'],
+        $product = Product::findOrfail($id);
+        $imagepath = $data['image']->store('uploads', 'public');
+        $product->update(
+            [
+            'user_id' => $data['user_id'],
             'caption' => $data['caption'],
             'discription' => $data['discription'],
-            'image' => $imagePath,
-        ]);
-
-        // Save post to database
-        $post->save();
+            'image' => $imagepath
+            ]
+        
+        );
 
         return response()->json([
             'status' => true,
-            'message' => 'Post edit Successfully',
+            'message' => 'product edit Successfully',
             ]);
     }
 
@@ -130,14 +128,14 @@ class adminController extends Controller
         ]);
     }
 
-    public function deletepost(Request $request)
+    public function deleteProduct(Request $request)
     {
        $id = $request->id;
-       $post = Post::findOrfail($id);
-       $post->delete();
+       $product = Product::findOrfail($id);
+       $product->delete();
        return response()->json([
         'status' => true,
-        'message' => 'Post delete Successfully',
+        'message' => 'product delete Successfully',
         ]);
     }
     

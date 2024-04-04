@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PostsController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\twoFactorcontroller;
+use App\Http\Controllers\TwoFactorcontroller;
 use App\Http\Controllers\Admin\Admincontroller;
-use App\Http\Controllers\Admin\userAdminController;
-use App\Http\Controllers\Admin\postAdminController;
+use App\Http\Controllers\Admin\UserAdminController;
+use App\Http\Controllers\Admin\ProductAdminController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\twoFactorMiddleware;
 
@@ -28,14 +28,14 @@ Route::post('/verifycheck',[twoFactorcontroller::class,'store'])->name('verfiy.s
 });
 
 
-Route::middleware(['auth',twoFactorMiddleware::class])->group(function(){
+Route::middleware(['auth',TwoFactorMiddleware::class])->group(function(){
    
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// post
-Route::controller(PostsController::class)->group(function () {
-    Route::get('/p/show/{user}', 'index')->name('post.index');
+// Product
+Route::controller(ProductController::class)->group(function () {
+    Route::get('/p/show/{user}', 'index',)->name('Product.index');
 });
 
 
@@ -52,20 +52,20 @@ Route::middleware(AdminMiddleware::class)->group(function () {
 
     Route::controller(Admincontroller::class)->group(function () {
         Route::get('/dashbord', 'dashInfo')->name('dash.info');
-        Route::get('/user/{user}/post','userPost')->name('admin.userPost');
+        Route::get('/user/{user}/Product','userProduct')->name('admin.userProduct');
         Route::post('/admin/adduserprofile/{user_id}','addUserProfile')->name('admin.userProfile');
        
     });
-    Route::controller(postAdminController::class)->group(function () {
-        Route::get('/showallpost', 'index')->name('admin.showPost');
-        Route::get('/admin/p/create', 'create')->name('admin.addPost');
-        Route::post('/admin/p','store')->name('admin.storePost');
-        Route::delete('/admin/destroyPost/{id}','destroy')->name('admin.PostDestroy');
-        Route::get('/admin/post/{id}/edit', 'edit')->name('admin.postEdit');
-        Route::patch('/admin/post/{id}/update','update')->name('admin.postUpdate');
+    Route::controller(ProductAdminController::class)->group(function () {
+        Route::get('/showallProduct', 'index')->name('admin.showProduct');
+        Route::get('/admin/p/create', 'create')->name('admin.addProduct');
+        Route::post('/admin/p','store')->name('admin.storeProduct');
+        Route::delete('/admin/destroyProduct/{id}','destroy')->name('admin.ProductDestroy');
+        Route::get('/admin/Product/{id}/edit', 'edit')->name('admin.ProductEdit');
+        Route::patch('/admin/Product/{id}/update','update')->name('admin.ProductUpdate');
        
     });
-    Route::controller(userAdminController::class)->group(function () {
+    Route::controller(UserAdminController::class)->group(function () {
         Route::get('/showalluser', 'index')->name('admin.showUser');
         Route::get('/admin/user/create', 'create')->name('admin.addUser');
         Route::post('/admin/user','store')->name('admin.storeUser');

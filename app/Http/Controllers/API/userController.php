@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Notifications\SendTwoFactorCode;
@@ -140,16 +141,16 @@ class userController extends Controller
         return response()->noContent();
     }
 
-    public function userPost(Request $request)
+    public function userProduct(Request $request)
     {
         $user = $request->user();
-        $post = DB::table('posts')->where('user_id', $user->id)->get();
-        $psotCount = $post->count();
+        $product = Product::all()->where('user_id', $user->id);
+        $psotCount = $product->count();
 
         return response()->json([
             'status' => true,
-            'message' => 'User post '.$psotCount,
-            'post' => $post
+            'message' => 'User product '.$psotCount,
+            'post' => $product
         ], 200);
     }
 

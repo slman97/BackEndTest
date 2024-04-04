@@ -1,29 +1,26 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use App\Models\User;
-use App\Models\Profile;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\user\userStoreRequest;
-use App\Http\Requests\user\userUpdateRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
 
-class userAdminController extends Controller
+use App\Models\User;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\user\UserStoreRequest;
+use App\Http\Requests\user\UserUpdateRequest;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
+use App\DataTables\userDataTable;
+
+class UserAdminController extends Controller
 {
-    public function index(){
+    public function index(userDataTable $dataTable){
     
-        $users = DB::table('users')->paginate(5);
-       
-        return view('Admin.user.showUser',compact('users'));
+        return $dataTable->render("Admin.user.showUser");
     }
+ 
     public function create(){
         return view('Admin.user.addUser');
    }
-   public function store(userStoreRequest $request){
+   public function store(UserStoreRequest $request){
        $data = $request->validated();
 
        User::create([
@@ -47,26 +44,13 @@ class userAdminController extends Controller
     $user = User::find($id);
    return view ('Admin.user.editUser',compact('user'));
 }
-public function update(userUpdateRequest $request,$id){
-    // Get current user
-    $user = User::findOrFail($id);
-
-    // Validate the data submitted by user
-    $data = $request->validated();
-
-    // Fill user model
-    $user->fill([
-        'user_type' => $data['user_type'],
-        'firstname' => $data['firstname'],
-        'lastname' => $data['lastname'],
-        'phone' => $data['phone'],
-        'email' => $data['email']
-    ]);
-
-    // Save user to database
-    $user->save();
-
-    // Redirect to route
-    return redirect("/dashbord");
+public function update(UserUpdateRequest $request,$id){
+    $user = User::find($id);
+        $data = $request->validated();
+        $user->update(array_merge(
+            $data,
+        ));
+        return redirect("/dashbord");
+    
 }
 }

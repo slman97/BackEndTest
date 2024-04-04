@@ -5,12 +5,12 @@
     <div class="card">
         <div class="card-header">
             <h4 class="card-title"> 
-                <a>Post count</a>
+                <a>Product count</a>
             </h4>
         </div>
 
         <div class="card-body">
-            <a >{{$postCount}}</a>
+            <a >{{$productCount}}</a>
         </div>
     </div>
     <div class="card">

@@ -48,13 +48,13 @@
                             </a>
                         </li>
                         <li class="nav-item dropdown" >
-                            <a id="navbarDropdown" class="nav-link" href="/showallpost" >
-                                show all post
+                            <a id="navbarDropdown" class="nav-link" href="/showallProduct" >
+                                show all products
                             </a>
                         </li>
                         <li class="nav-item dropdown" >
                             <a id="navbarDropdown" class="nav-link" href="/admin/p/create" >
-                               add post
+                               add product
                             </a>
                         </li>
                     </ul>

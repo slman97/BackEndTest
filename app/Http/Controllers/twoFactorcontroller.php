@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Notifications\SendTwoFactorCode;
 use Illuminate\Support\Facades\Hash;
 
-
-class twoFactorcontroller extends Controller
+class TwoFactorcontroller extends Controller
 {
     public function index(){
         $user = auth()->user();
