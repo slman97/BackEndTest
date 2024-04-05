@@ -1,32 +1,24 @@
 @extends('layouts.master')
 @section('content')
 <div class="card-body">
-    <form method="POST" action="/admin/p" enctype="multipart/form-data">
+    <form method="POST" action="" enctype="multipart/form-data" id="product">
         @csrf
         <div class="row mb-3">
             <label for="user_id" class="col-md-4 col-form-label text-md-end">User id</label>
 
             <div class="col-md-6">
-                <input id="user_id" type="text" class="form-control @error('user_id') is-invalid @enderror" name="user_id"  required autocomplete="user_id" autofocus>
+                <input id="user_id" type="text" class="form-control" name="user_id"   autocomplete="user_id" autofocus>
 
-                @error('user_id')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                <small id="user_id_error" class="form-text text-danger"></small>
             </div>
         </div>
         <div class="row mb-3">
             <label for="caption" class="col-md-4 col-form-label text-md-end">Product caption</label>
 
             <div class="col-md-6">
-                <input id="caption" type="text" class="form-control @error('caption') is-invalid @enderror" name="caption" value="{{ old('caption') }}" required autocomplete="caption" autofocus>
+                <input id="caption" type="text" class="form-control " name="caption" value="{{ old('caption') }}"  autocomplete="caption" autofocus>
 
-                @error('caption')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                <small id="caption_error" class="form-text text-danger"></small>
             </div>
         </div>
 
@@ -34,13 +26,9 @@
             <label for="discription" class="col-md-4 col-form-label text-md-end">{{ __('discription') }}</label>
 
             <div class="col-md-6">
-                <input id="discription" type="text" class="form-control @error('discription') is-invalid @enderror" name="discription" required autocomplete="current-discription">
+                <input id="discription" type="text" class="form-control " name="discription"  autocomplete="current-discription">
 
-                @error('discription')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                <small id="discription_error" class="form-text text-danger"></small>
             </div>
         </div>
 
@@ -52,17 +40,56 @@
                     <label class="form-check-label" for="image">
                       add Image
                     </label>
+                    <small id="image_error" class="form-text text-danger"></small>
                 </div>
             </div>
         </div>
 
         <div class="row mb-0">
             <div class="col-md-8 offset-md-4">
-                <button type="submit" class="btn btn-primary">
+                <button id= "save" class="btn btn-primary">
                     add product
                 </button>
             </div>
         </div>
     </form>
 </div>
+@endsection
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+@section('script')
+<script>
+//When you press the button
+    $(document).on('click', '#save', function (e) {
+        e.preventDefault();
+// Delete previous errors
+        $('#user_id_error').text('');
+        $('#caption_error').text('');
+        $('#discription_error').text('');
+        $('#image_error').text('');
+        
+        var formData = new FormData($('#product')[0]);
+
+        $.ajax({
+            type: 'post',
+            enctype: 'multipart/form-data',
+            url: "{{route('admin.storeProduct')}}",
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (data) {
+                    window.location.href = "{{route('admin.showProduct')}}";
+                
+
+            }, error: function (reject) {
+                var response = $.parseJSON(reject.responseText);
+                $.each(response.errors, function (key, val) {
+                    $("#" + key + "_error").text(val[0]);
+                });
+            }
+        });
+    });
+
+
+</script>
 @endsection

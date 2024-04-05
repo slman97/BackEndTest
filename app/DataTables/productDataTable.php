@@ -27,18 +27,18 @@ class productDataTable extends DataTable
                 return $update;
             })
             ->addColumn('delete Product', function ($row) {
-                $delete = '<form action ="'. route('admin.ProductDestroy', $row->id).'" method="POST">
+              $delete =  '<form action ="'. route('admin.ProductDestroy', $row->id).'" method="POST">
                 '.csrf_field().'
-                '.method_field("delete").'
-                <input  onclick="return confirm("Are you sure you want to delete?")" type="submit" name="submit" value="delate post" >
-            </form>';
+                '.method_field('delete').'
+                <input  onclick="return confirm("Are you sure you want to delete?")" type="submit" name="submit" value="delate product" >
+                </form>';
                 return $delete;
             })
             ->editColumn('image', function($row){
                 $image = '<a><img src="/storage/'.$row->image.'" style="max-width: 200px;"></a>';
                 return $image;
             })
-            ->rawColumns(['image','deleat Product', 'update Product'])
+            ->rawColumns(['image','delete Product', 'update Product'])
             
            ;
       
@@ -84,7 +84,7 @@ class productDataTable extends DataTable
     protected function getColumns()
     {
         return [
-           'id','user_id','caption','image','update Product','deleat Product'
+           'id','user_id','caption','image','update Product','delete Product'
         ];
     }
 

@@ -29,36 +29,56 @@ class userDataTable extends DataTable
             ->addColumn('user profile', function ($row) {
                 if (is_null(User::find($row->id)->profile)) 
                 {
-                     $profile = '<form action ="'.route('admin.userProfile',$row->id).'" method="POST">
-                     '.csrf_field().'
-                           <input  type="submit" name="submit" value="add user profile" >
-                        </form>'; 
+                     $profile = '
+                     <form action ="" method="post">
+                           <button id="addUserProfile" class="edit btn btn-success btn-sm">
+                           add profile
+                           </button>
+                    </form>
+                       <script>
+                        // $(document).on("click","#addUserProfile",function(){
+                        //    e.prevenDefault();
+                          //  $.ajax({
+                           //     type : "POST",
+                           //     url:"'.route('admin.userProfile',$row->id).'",
+                            //    "token" : "'.csrf_token().'"
+                            //    data:{
+
+                            //    },
+                            //    succcess : function (data) {
+
+                           //     },
+                            //    error : function (reject) {
+//
+                            //    }
+                        //    });
+                       //  });
+                        </script>
+                        '; 
                 }
                 else
                 {
                     $profile =   "user have profile";
                 }
-                
-            
                 return $profile;
             })
             
-            ->addColumn('deleat Product', function ($row) {
+            ->addColumn('delete Product', function ($row) {
                 if(User::find($row->id)->user_type == "admin")
                 {
-                $deleat = "the user is admin";
+                $delete = "the user is admin";
                 }
                 else 
                 {
-                $deleat = '<form action ="'. route('admin.userDestroy', $row->id).'" method="POST">
+                $delete = '<form action ="'. route('admin.userDestroy', $row->id).'" method="POST">
                 '.csrf_field().'
                 '.method_field('delete').'
                 <input  onclick="return confirm("Are you sure you want to delete?")" type="submit" name="submit" value="delate user" >
                 </form>';
                 }
                
-                return $deleat;
-            })->rawColumns(['deleat Product', 'update user','user profile'])
+                return $delete;
+            })->rawColumns(['delete Product', 'update user','user profile'])
            ;
     }
 
@@ -103,7 +123,7 @@ class userDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id','user_type','firstname','lastname','phone','email','update user','deleat Product','user profile'
+            'id','user_type','firstname','lastname','phone','email','update user','delete Product','user profile'
         ];
     }
 
